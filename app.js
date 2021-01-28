@@ -34,7 +34,11 @@ app.get('/maketweet', async (req, res) => {
 
 app.get('/tweets', async (req, res) => {
   const tweets = await Tweet.find({});
-  res.render('tweets/index')
+  res.render('tweets/index', { tweets })
+})
+
+app.get('/tweets/:id', async (req, res) => {
+  res.render('tweets/show')
 })
 
 app.listen(3000, () => {

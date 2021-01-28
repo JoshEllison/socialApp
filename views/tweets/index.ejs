@@ -9,6 +9,11 @@
 
 <body>
   <h1>All Tweets</h1>
+  <ul>
+    <% for (let tweet of tweets) { %>
+      <li><a href="/tweets/<%= tweet._id %>"><%= tweet.tweetText %></a></li>
+    <% } %>
+  </ul>
 </body>
 
 </html>
