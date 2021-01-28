@@ -22,6 +22,8 @@ const app = express()
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
 
+app.use(express.urlencoded({ extended: true }))
+
 app.get('/', (req, res) => {
   res.render('home')
 })
@@ -37,8 +39,17 @@ app.get('/tweets', async (req, res) => {
   res.render('tweets/index', { tweets })
 })
 
+app.get('/tweets/new', (req, res) => {
+  res.render('tweets/new')
+})
+
+app.post('/tweets', async (req, res) => {
+  res.send(req.body)
+})
+
 app.get('/tweets/:id', async (req, res) => {
-  res.render('tweets/show')
+  const tweet = await Tweet.findById(req.params.id)
+  res.render('tweets/show', { tweet })
 })
 
 app.listen(3000, () => {
