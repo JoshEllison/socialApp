@@ -27,9 +27,14 @@ app.get('/', (req, res) => {
 })
 
 app.get('/maketweet', async (req, res) => {
-  const tweet = new Tweet({ tweetText: 'this is a test' })
+  const tweet = new Tweet({ tweetText: '2020 set a low bar for 2021' })
   await tweet.save()
   res.send(tweet)
+})
+
+app.get('/tweets', async (req, res) => {
+  const tweets = await Tweet.find({});
+  res.render('tweets/index')
 })
 
 app.listen(3000, () => {
