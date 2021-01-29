@@ -1,9 +1,9 @@
-const express = require('express')
-const path = require('path')
+const express = require('express');
+const path = require('path');
 const mongoose = require('mongoose');
-const methodOverride = require('method-override')
+const ejsMate = require('ejs-mate');
+const methodOverride = require('method-override');
 const Tweet = require('./models/tweet');
-const { captureRejectionSymbol } = require('events');
 
 mongoose.connect('mongodb://localhost:27017/social-app', {
   useNewUrlParser: true,
@@ -19,7 +19,7 @@ db.once('open', () => {
 
 const app = express()
 
-
+app.engine('ejs', ejsMate)
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
 
