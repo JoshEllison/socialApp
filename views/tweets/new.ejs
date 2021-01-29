@@ -1,10 +1,21 @@
 <% layout('layouts/boilerplate') %>
-  <form action='/tweets' method='POST'>
-    <div>
-      <label for='tweetText'></label>
-      <input type='text' id='tweetText' name='tweet[tweetText]'>
+  <div class='row'>
+    <h1 class='text-center'>New Post</h1>
+    <div class='col-6 offset-3'>
+      <form action='/tweets' method='POST'>
+        <div class='mb-3'>
+          <label class='form-label' for='tweetText'>150 Characters</label>
+          <textarea class='form-control' type='text' id='tweetText' name='tweet[tweetText]'></textarea>
+        </div>
+        <div class='mb-3'>
+          <label class='form-label' for='image'>Image URL</label>
+          <input class='form-control' type='text' id='image' name='tweet[image]'>
+        </div>
+        <div class='mb-3'>
+          <button class='btn btn-success'>Post Tweet</button>
+        </div>
+      </form>
+      <a href="/tweets">All Tweets</a>
     </div>
-    <button>Post Tweet</button>
-  </form>
-  <a href="/tweets">All Tweets</a>
+  </div>
   
