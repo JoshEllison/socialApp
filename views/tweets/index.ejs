@@ -3,8 +3,15 @@
   <div>
     <a href="/tweets/new">Add Tweet</a>
   </div>
-  <ul>
+ 
     <% for (let tweet of tweets) { %>
-      <li><a href="/tweets/<%= tweet._id %>"><%= tweet.tweetText %></a></li>
+      <div class="card">
+        <h5 class="card-header">who liked eventually</h5>
+        <div class="card-body">
+          <h5 class="card-title">who posted</h5>
+          <p class="card-text"><%= tweet.tweetText %></p>
+          <a href="#" class="btn btn-primary">add buttons here</a>
+        </div>
+      </div>
     <% } %>
-  </ul>
+  
