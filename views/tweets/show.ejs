@@ -9,6 +9,19 @@
 
 <body>
   <h1><%= tweet.tweetText %></h1>
+  <p>
+    <a href='/tweets/<%=tweet._id%>/edit'>Edit</a>
+  </p>
+  <p>
+    <form action='/tweets/<%=tweet._id%>?_method=DELETE' method='POST'>
+      <button>Delete</button>
+    </form>
+  </p>
+
+  <footer>
+    <a href='/tweets'>All Tweets</a>
+  </footer>
 </body>
+
 
 </html>

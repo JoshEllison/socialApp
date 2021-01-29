@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit</title>
+</head>
+
+<body>
+  <h1>Edit</h1>
+  <form action='/tweets/<%=tweet._id%>?_method=PUT' method='POST'>
+    <div>
+      <label for='tweetText'></label>
+      <input type='text' id='tweetText' name='tweet[tweetText]' value='<%=tweet.tweetText %>'>
+    </div>
+    <button>Edit Tweet</button>
+  </form>
+  <a href="/tweets/<%= tweet._id%>">Back To Tweet</a>
+
+</body>
+
+</html>
