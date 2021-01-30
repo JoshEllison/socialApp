@@ -1,15 +1,28 @@
 <% layout('layouts/boilerplate') %>
-  <h1><%= tweet.tweetText %></h1>
-  <p>
-    <a href='/tweets/<%=tweet._id%>/edit'>Edit</a>
-  </p>
-  <p>
-    <form action='/tweets/<%=tweet._id%>?_method=DELETE' method='POST'>
-      <button>Delete</button>
-    </form>
-  </p>
+<div class='row'>
+  <div class='col-6 offset-3'>
+    <div class="card">
+      <h5 class="card-header">who liked eventually</h5>
+      <div class="card-body">
+        <h5 class="card-title">who posted</h5>
+        <p class="card-text">
+          <%= tweet.tweetText %>
+        </p>
+        
+        <a class='card-link btn btn-warning' href='/tweets/<%=tweet._id%>/edit'>Edit</a>
+        <form class='d-inline' action='/tweets/<%=tweet._id%>?_method=DELETE' method='POST'>
+          <button class='btn btn-danger'>Delete</button>
+        </form>
+      </div>
+      <footer>
+        <a href='/tweets'>All Tweets</a>
+      </footer>
+    </div>
+  </div>
+</div>
 
-  <footer>
-    <a href='/tweets'>All Tweets</a>
-  </footer>
+
+
+  
+
 <% layout('layouts/boilerplate') %>

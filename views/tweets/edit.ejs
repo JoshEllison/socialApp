@@ -1,11 +1,20 @@
 <% layout('layouts/boilerplate') %>
-  <h1>Edit</h1>
-  <form action='/tweets/<%=tweet._id%>?_method=PUT' method='POST'>
-    <div>
-      <label for='tweetText'></label>
-      <input type='text' id='tweetText' name='tweet[tweetText]' value='<%=tweet.tweetText %>'>
-    </div>
-    <button>Edit Tweet</button>
-  </form>
-  <a href="/tweets/<%= tweet._id%>">Back To Tweet</a>
-
+<div class='row'>
+  <h1 class='text-center'>Edit Post</h1>
+  <div class='col-6 offset-3'>
+    <form action='/tweets/<%=tweet._id%>?_method=PUT' method='POST'>
+      <div class='mb-3'>
+        <label class='form-label' for='tweetText'>150 Characters</label>
+        <textarea class='form-control' type='text' id='tweetText' name='tweet[tweetText]'><%=tweet.tweetText %></textarea>
+      </div>
+      <div class='mb-3'>
+        <label class='form-label' for='image'>Image URL</label>
+        <input class='form-control' type='text' id='image' name='tweet[image]' value='<%=tweet.image %>'>
+      </div>
+      <div class='mb-3'>
+        <button class='btn btn-info'>Update Tweet</button>
+      </div>
+    </form>
+    <a href="/tweets/<%= tweet._id%>">Back To Tweet</a>
+  </div>
+</div>
