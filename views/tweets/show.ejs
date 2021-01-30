@@ -8,7 +8,9 @@
         <p class="card-text">
           <%= tweet.tweetText %>
         </p>
-        
+        <img src="<%=tweet.image %>" class="img-fluid rounded float-end" >
+      </div>
+      <div class='card-footer'>
         <a class='card-link btn btn-warning' href='/tweets/<%=tweet._id%>/edit'>Edit</a>
         <form class='d-inline' action='/tweets/<%=tweet._id%>?_method=DELETE' method='POST'>
           <button class='btn btn-danger'>Delete</button>

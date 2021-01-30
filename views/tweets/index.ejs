@@ -5,13 +5,16 @@
   </div>
  
     <% for (let tweet of tweets) { %>
-      <div class="card">
-        <h5 class="card-header">who liked eventually</h5>
-        <div class="card-body">
-          <h5 class="card-title">who posted</h5>
-          <p class="card-text"><%= tweet.tweetText %></p>
-          <a href="#" class="btn btn-primary">add buttons here</a>
+      <div class="card mb-3">
+        <h5 class="card-header mb-3">who liked eventually</h5>
+        <div class="card-body mb-3">
+          <h5 class="card-title mb-3">who posted</h5>
+          <p class="card-text mb-3"><%= tweet.tweetText %></p>
+          <img src="<%=tweet.image %>" class="img-fluid rounded mx-auto d-block">
         </div>
+        <footer>
+          <a href="#" class="btn btn-primary mb-3">add buttons here</a>
+        </footer>
       </div>
     <% } %>
   
