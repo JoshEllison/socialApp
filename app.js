@@ -2,7 +2,9 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
+const Joi = require('joi');
 const catchAsync = require('./utils/catchAsync');
+const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');
 const Tweet = require('./models/tweet');
 
@@ -31,51 +33,70 @@ app.get('/', (req, res) => {
   res.render('home')
 })
 
-app.get('/maketweet', async (req, res) => {
+app.get('/maketweet', catchAsync(async (req, res) => {
   const tweet = new Tweet({ tweetText: '2020 set a low bar for 2021' })
   await tweet.save()
   res.send(tweet)
-})
+}))
 
-app.get('/tweets', async (req, res) => {
+app.get('/tweets', catchAsync(async (req, res) => {
   const tweets = await Tweet.find({});
   res.render('tweets/index', { tweets })
-})
+}))
 
 app.get('/tweets/new', (req, res) => {
   res.render('tweets/new')
 })
 
 app.post('/tweets', catchAsync(async (req, res, next) => {
+  // if(!req.body.tweet) throw new ExpressError('Invalid Tweet Data', 400)
+    const tweetSchema = Joi.object({
+      tweet: Joi.object({
+        tweetText: Joi.string().required().max(150),
+        image: Joi.string()
+      }).required()
+    })
+    const { error } = tweetSchema.validate(req.body)
+    if(error){
+      const msg = error.details.map(el => el.message).join(',')
+      throw new ExpressError(msg, 400)
+    }
+    console.log(result);
     const tweet = new Tweet(req.body.tweet)
     await tweet.save();
     res.redirect(`/tweets/${tweet._id}`)
 }))
 
-app.get('/tweets/:id', async (req, res) => {
+app.get('/tweets/:id', catchAsync(async (req, res) => {
   const tweet = await Tweet.findById(req.params.id)
   res.render('tweets/show', { tweet })
-})
+}))
 
-app.get('/tweets/:id/edit', async (req, res) => {
+app.get('/tweets/:id/edit', catchAsync(async (req, res) => {
   const tweet = await Tweet.findById(req.params.id)
   res.render('tweets/edit', { tweet })
-})
+}))
 
-app.put('/tweets/:id', async (req, res) => {
+app.put('/tweets/:id', catchAsync(async (req, res) => {
   const { id } = req.params;
   const tweet = await Tweet.findByIdAndUpdate(id, {...req.body.tweet } )
   res.redirect(`/tweets/${tweet._id}`)
-})
+}))
 
-app.delete('/tweets/:id', async (req, res) => {
+app.delete('/tweets/:id', catchAsync(async (req, res) => {
   const { id } = req.params;
   await Tweet.findByIdAndDelete(id);
   res.redirect('/tweets');
+}))
+
+app.all('*', (req, res, next) => {
+  next(new ExpressError('Page Not Found', 404))
 })
 
 app.use((err, req, res, next) => {
-  res.send('Something went wrong')
+  const { statusCode = 500 } = err;
+  if (!err.message) err.message = 'Something Went Wrong!'
+  res.status(statusCode).render('error', { err })
 })
 
 app.listen(3000, () => {
