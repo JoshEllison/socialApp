@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
+const catchAsync = require('./utils/catchAsync');
 const methodOverride = require('method-override');
 const Tweet = require('./models/tweet');
 
@@ -45,11 +46,11 @@ app.get('/tweets/new', (req, res) => {
   res.render('tweets/new')
 })
 
-app.post('/tweets', async (req, res) => {
-  const tweet = new Tweet(req.body.tweet)
-  await tweet.save();
-  res.redirect(`/tweets/${tweet._id}`)
-})
+app.post('/tweets', catchAsync(async (req, res, next) => {
+    const tweet = new Tweet(req.body.tweet)
+    await tweet.save();
+    res.redirect(`/tweets/${tweet._id}`)
+}))
 
 app.get('/tweets/:id', async (req, res) => {
   const tweet = await Tweet.findById(req.params.id)
@@ -71,6 +72,10 @@ app.delete('/tweets/:id', async (req, res) => {
   const { id } = req.params;
   await Tweet.findByIdAndDelete(id);
   res.redirect('/tweets');
+})
+
+app.use((err, req, res, next) => {
+  res.send('Something went wrong')
 })
 
 app.listen(3000, () => {

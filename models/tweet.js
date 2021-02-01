@@ -6,6 +6,7 @@ const TweetSchema = new Schema({
   owner: String,
   tweetText: String,
   image: String,
+  price: Number
 })
 
 module.exports = mongoose.model('Tweet', TweetSchema);

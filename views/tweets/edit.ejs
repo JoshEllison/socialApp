@@ -2,10 +2,13 @@
 <div class='row'>
   <h1 class='text-center'>Edit Post</h1>
   <div class='col-6 offset-3'>
-    <form action='/tweets/<%=tweet._id%>?_method=PUT' method='POST'>
+    <form action='/tweets/<%=tweet._id%>?_method=PUT' method='POST' novalidate class='validated-form'>
       <div class='mb-3'>
         <label class='form-label' for='tweetText'>150 Characters</label>
-        <textarea class='form-control' type='text' id='tweetText' name='tweet[tweetText]'><%=tweet.tweetText %></textarea>
+        <textarea class='form-control' type='text' id='tweetText' name='tweet[tweetText]' required><%=tweet.tweetText %></textarea>
+        <div class='valid-feedback'>
+          Looks good
+        </div>
       </div>
       <div class='mb-3'>
         <label class='form-label' for='image'>Image URL</label>
