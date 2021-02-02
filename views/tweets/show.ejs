@@ -16,17 +16,21 @@
           <button class='btn btn-danger'>Delete</button>
         </form>
       </div>
-      <footer>
-        <a href='/tweets'>All Tweets</a>
-      </footer>
+      
     </div>
-    <form action=''>
+    <form action='/tweets/<%=tweet._id%>/replies' method='POST' class ='mb-3'>
       <div class='mb-3'>
-        <label for='replyText'>Reply</label>
+        <label for='replyText'>Tweet A Reply</label>
+      </div>
+      <div class='mb-3'>
         <textarea class='form-control' name='reply[replyText]' id='replyText' cols='30' rows='3'></textarea>
       </div>
+      <button class='btn btn-success'>Reply</button>
     </form>
   </div>
+  <footer>
+    <a href='/tweets'>All Tweets</a>
+  </footer>
 </div>
 
 

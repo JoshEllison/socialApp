@@ -8,6 +8,7 @@ const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');
 const Tweet = require('./models/tweet');
+const Reply = require('./models/reply');
 
 mongoose.connect('mongodb://localhost:27017/social-app', {
   useNewUrlParser: true,
@@ -86,6 +87,15 @@ app.delete('/tweets/:id', catchAsync(async (req, res) => {
   const { id } = req.params;
   await Tweet.findByIdAndDelete(id);
   res.redirect('/tweets');
+}))
+
+app.post('/tweets/:id/replies', catchAsync(async (req, res) => {
+  const tweet = await Tweet.findById(req.params.id);
+  const reply = new Reply(req.body.reply);
+  tweet.replies.push(reply);
+  await reply.save();
+  await tweet.save();
+  res.redirect(`/tweets/${tweet._id}`)
 }))
 
 app.all('*', (req, res, next) => {
