@@ -12,6 +12,7 @@ Here is a working live demo: add once live
 
 ## Features
 - Server side validations with npm package Joi
+- Client side validations with Bootstrap 
 
 ## To-do
 

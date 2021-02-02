@@ -3,7 +3,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
 const Joi = require('joi');
-const { tweetSchema } = require('./schemas')
+const { tweetSchema, replySchema } = require('./schemas')
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');
@@ -41,6 +41,16 @@ const validateTweet = (req, res, next) => {
   }
 }
 
+const validateReply = (req, res, next) => {
+  const { error } = replySchema.validate(req.body);
+  if (error) {
+    const msg = error.details.map(el => el.message).join(',') //makes a single string message
+    throw new ExpressError(msg, 400);
+  } else {
+    next();
+  }
+}
+
 app.get('/', (req, res) => {
   res.render('home')
 })
@@ -68,7 +78,7 @@ app.post('/tweets', validateTweet, catchAsync(async (req, res, next) => {
 }))
 
 app.get('/tweets/:id', catchAsync(async (req, res) => {
-  const tweet = await Tweet.findById(req.params.id)
+  const tweet = await Tweet.findById(req.params.id).populate('replies');
   res.render('tweets/show', { tweet })
 }))
 
@@ -89,13 +99,20 @@ app.delete('/tweets/:id', catchAsync(async (req, res) => {
   res.redirect('/tweets');
 }))
 
-app.post('/tweets/:id/replies', catchAsync(async (req, res) => {
+app.post('/tweets/:id/replies', validateReply, catchAsync(async (req, res) => {
   const tweet = await Tweet.findById(req.params.id);
   const reply = new Reply(req.body.reply);
   tweet.replies.push(reply);
   await reply.save();
   await tweet.save();
   res.redirect(`/tweets/${tweet._id}`)
+}))
+
+app.delete('/tweets/:id/replies/:replyId', catchAsync(async (req, res) => {
+  const { id, replyId } = req.params;
+  await Tweet.findByIdAndUpdate(id, {$pull: { replies: replyId }});
+  await Reply.findByIdAndDelete(req.params.replyId);
+  res.redirect(`/tweets/${id}`);
 }))
 
 app.all('*', (req, res, next) => {

@@ -18,23 +18,37 @@
       </div>
       
     </div>
-    <form action='/tweets/<%=tweet._id%>/replies' method='POST' class ='mb-3'>
+    <form action='/tweets/<%=tweet._id%>/replies' method='POST' class ='mb-3 validated-form' novalidate>
       <div class='mb-3'>
         <label for='replyText'>Tweet A Reply</label>
       </div>
       <div class='mb-3'>
-        <textarea class='form-control' name='reply[replyText]' id='replyText' cols='30' rows='3'></textarea>
+        <textarea class='form-control' name='reply[replyText]' id='replyText' cols='30' rows='3' required></textarea>
+        <div class='valid-feedback'>
+          Looks good
+        </div>
+      </div>
+      <div class='mb-3'>
+        <label class='form-label' for='image'>Image URL</label>
+        <input class='form-control' type='text' id='image' name='reply[image]'>
       </div>
       <button class='btn btn-success'>Reply</button>
     </form>
+    <% for(let reply of tweet.replies) { %>
+      <div class='card mb-3'>
+        <div class='card-body'>
+          <h5 class='card-title'>person who wrote comment</h5>
+          <p> <%= reply.replyText %> </p>
+          <form action='/tweets/<%= tweet._id %>/replies/<%= reply._id %>?_method=DELETE' method='POST'>
+            <button class='btn btn-sm btn-danger'>Delete</button>
+          </form>
+        </div>
+      </div>
+    <% } %> 
   </div>
   <footer>
     <a href='/tweets'>All Tweets</a>
   </footer>
 </div>
-
-
-
-  
 
 <% layout('layouts/boilerplate') %>

@@ -7,6 +7,12 @@ module.exports.tweetSchema = Joi.object({
     tweetText: Joi.string().required().max(150),
     image: Joi.string().allow(''),
     price: Joi.number().allow('')
-  })
+  }).required()
 });
 
+module.exports.replySchema = Joi.object({
+  reply: Joi.object({
+    replyText: Joi.string().required().max(150),
+    image: Joi.string().allow(''),
+  }).required()
+})
