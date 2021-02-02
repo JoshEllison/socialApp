@@ -6,7 +6,13 @@ const TweetSchema = new Schema({
   owner: String,
   tweetText: String,
   image: String,
-  price: Number
+  price: Number,
+  replies: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Reply'
+    }
+  ]
 })
 
 module.exports = mongoose.model('Tweet', TweetSchema);
