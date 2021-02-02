@@ -5,7 +5,8 @@ const Joi = require('joi');
 module.exports.tweetSchema = Joi.object({
   tweet: Joi.object({
     tweetText: Joi.string().required().max(150),
-    image: Joi.string()
-  }).required()
+    image: Joi.string().allow(''),
+    price: Joi.number().allow('')
+  })
 });
 
