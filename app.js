@@ -3,6 +3,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
 const Joi = require('joi');
+const { tweetSchema } = require('./schemas')
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');
@@ -29,6 +30,16 @@ app.set('views', path.join(__dirname, 'views'))
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'));
 
+const validateTweet = (req, res, next) => {
+  const { error } = tweetSchema.validate(req.body)
+  if (error) {
+    const msg = error.details.map(el => el.message).join(',') //makes a single string message
+    throw new ExpressError(msg, 400);
+  } else {
+    next();
+  }
+}
+
 app.get('/', (req, res) => {
   res.render('home')
 })
@@ -48,20 +59,8 @@ app.get('/tweets/new', (req, res) => {
   res.render('tweets/new')
 })
 
-app.post('/tweets', catchAsync(async (req, res, next) => {
+app.post('/tweets', validateTweet, catchAsync(async (req, res, next) => {
   // if(!req.body.tweet) throw new ExpressError('Invalid Tweet Data', 400)
-    const tweetSchema = Joi.object({
-      tweet: Joi.object({
-        tweetText: Joi.string().required().max(150),
-        image: Joi.string()
-      }).required()
-    })
-    const { error } = tweetSchema.validate(req.body)
-    if(error){
-      const msg = error.details.map(el => el.message).join(',')
-      throw new ExpressError(msg, 400)
-    }
-    console.log(result);
     const tweet = new Tweet(req.body.tweet)
     await tweet.save();
     res.redirect(`/tweets/${tweet._id}`)
@@ -77,7 +76,7 @@ app.get('/tweets/:id/edit', catchAsync(async (req, res) => {
   res.render('tweets/edit', { tweet })
 }))
 
-app.put('/tweets/:id', catchAsync(async (req, res) => {
+app.put('/tweets/:id', validateTweet, catchAsync(async (req, res) => {
   const { id } = req.params;
   const tweet = await Tweet.findByIdAndUpdate(id, {...req.body.tweet } )
   res.redirect(`/tweets/${tweet._id}`)
