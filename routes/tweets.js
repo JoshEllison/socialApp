@@ -28,6 +28,7 @@ router.post('/', validateTweet, catchAsync(async (req, res, next) => {
   // if(!req.body.tweet) throw new ExpressError('Invalid Tweet Data', 400)
   const tweet = new Tweet(req.body.tweet)
   await tweet.save();
+  req.flash('success', 'Successfully posted a new tweet!')
   res.redirect(`/tweets/${tweet._id}`)
 }))
 
