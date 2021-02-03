@@ -8,7 +8,6 @@ const TweetSchema = new Schema({
   owner: String,
   tweetText: String,
   image: String,
-  price: Number,
   replies: [
     {
       type: Schema.Types.ObjectId,

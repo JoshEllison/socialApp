@@ -28,29 +28,39 @@ router.post('/', validateTweet, catchAsync(async (req, res, next) => {
   // if(!req.body.tweet) throw new ExpressError('Invalid Tweet Data', 400)
   const tweet = new Tweet(req.body.tweet)
   await tweet.save();
-  req.flash('success', 'Successfully posted a new tweet!')
+  req.flash('success', 'Your tweet was sent!')
   res.redirect(`/tweets/${tweet._id}`)
 }))
 
 router.get('/:id', catchAsync(async (req, res) => {
   const tweet = await Tweet.findById(req.params.id).populate('replies');
+  if(!tweet){
+    req.flash('error', 'Cannot find that tweet!');
+    return res.redirect('/tweets');
+  }
   res.render('tweets/show', { tweet })
 }))
 
 router.get('/:id/edit', catchAsync(async (req, res) => {
   const tweet = await Tweet.findById(req.params.id)
+  if (!tweet) {
+    req.flash('error', 'Cannot find that tweet!');
+    return res.redirect('/tweets');
+  }
   res.render('tweets/edit', { tweet })
 }))
 
 router.put('/:id', validateTweet, catchAsync(async (req, res) => {
   const { id } = req.params;
   const tweet = await Tweet.findByIdAndUpdate(id, { ...req.body.tweet })
+  req.flash('success', 'Your tweet was edited!')
   res.redirect(`/tweets/${tweet._id}`)
 }))
 
 router.delete('/:id', catchAsync(async (req, res) => {
   const { id } = req.params;
   await Tweet.findByIdAndDelete(id);
+  req.flash('success', 'Your tweet was deleted!')
   res.redirect('/tweets');
 }))
 

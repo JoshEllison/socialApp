@@ -22,6 +22,7 @@ router.post('/', validateReply, catchAsync(async (req, res) => {
   tweet.replies.push(reply);
   await reply.save();
   await tweet.save();
+  req.flash('success', 'Your tweet was sent!')
   res.redirect(`/tweets/${tweet._id}`)
 }))
 
@@ -29,6 +30,7 @@ router.delete('/:replyId', catchAsync(async (req, res) => {
   const { id, replyId } = req.params;
   await Tweet.findByIdAndUpdate(id, { $pull: { replies: replyId } });
   await Reply.findByIdAndDelete(req.params.replyId);
+  req.flash('success', 'Your tweet was deleted!')
   res.redirect(`/tweets/${id}`);
 }))
 
