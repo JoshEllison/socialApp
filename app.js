@@ -7,8 +7,14 @@ const flash = require('connect-flash');
 const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');
 
-const tweets = require('./routes/tweets')
-const replies = require('./routes/replies')
+// auth
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const User = require('./models/user');
+
+const userRoutes = require('./routes/users');
+const tweetRoutes = require('./routes/tweets');
+const replyRoutes = require('./routes/replies');
 
 mongoose.connect('mongodb://localhost:27017/social-app', {
   useNewUrlParser: true,
@@ -47,6 +53,12 @@ const sessionConfig = {
 app.use(session(sessionConfig));
 app.use(flash());
 
+app.use(passport.initialize());
+app.use(passport.session()); // middleware for persistant login sessions
+passport.use(new LocalStrategy(User.authenticate())); // add aditional strategies later
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 // middleware to give access to whatever is in flash under success
 app.use((req, res, next) => {
   res.locals.success = req.flash('success');
@@ -54,9 +66,16 @@ app.use((req, res, next) => {
   next();
 })
 
+app.get('/fakeUser', async (req, res) => {
+  const user = new User({email: 'fakeEmail@gmail.com', username: 'fakeUser'})
+  const newUser = await User.register(user, 'password');
+  res.send(newUser);
+})
+
 /// prefixing routes ///
-app.use('/tweets', tweets) ;
-app.use('/tweets/:id/replies', replies);
+app.use('/', userRoutes);
+app.use('/tweets', tweetRoutes);
+app.use('/tweets/:id/replies', replyRoutes);
 
 app.get('/', (req, res) => {
   res.render('home')
