@@ -31,4 +31,10 @@ router.post('/login', passport.authenticate('local', {failureFlash: true, failur
   res.redirect('/tweets');
 })
 
+router.get('/logout', (req, res) => {
+  req.logOut();
+  req.flash('success', 'Goodbye!');
+  res.redirect('/tweets');
+})
+
 module.exports = router;
