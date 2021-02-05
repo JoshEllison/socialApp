@@ -4,18 +4,37 @@
     <div class="card">
       <h5 class="card-header">who liked eventually</h5>
       <div class="card-body">
-        <h5 class="card-title">who posted</h5>
+        <h5 class="card-title">
+          <%= tweet.author.username %> 
+        </h5>
         <p class="card-text">
           <%= tweet.tweetText %>
         </p>
         <img src="<%=tweet.image %>" class="img-fluid rounded float-end" >
       </div>
+      <% if( currentUser && tweet.author.equals(currentUser._id)) { %> 
       <div class='card-footer'>
         <a class='card-link btn btn-warning' href='/tweets/<%=tweet._id%>/edit'>Edit</a>
         <form class='d-inline' action='/tweets/<%=tweet._id%>?_method=DELETE' method='POST'>
           <button class='btn btn-danger'>Delete</button>
         </form>
       </div>
+      <% } %> 
+    </div>
+    <div class="card">
+      <% for(let reply of tweet.replies) { %>
+        <div class='card mb-3'>
+          <div class='card-body'>
+            <h5 class='card-title'>person who wrote comment</h5>
+            <p>
+              <%= reply.replyText %>
+            </p>
+            <form action='/tweets/<%= tweet._id %>/replies/<%= reply._id %>?_method=DELETE' method='POST'>
+              <button class='btn btn-sm btn-danger'>Delete</button>
+            </form>
+          </div>
+        </div>
+        <% } %>
     </div>
     <form action='/tweets/<%=tweet._id%>/replies' method='POST' class ='mb-3 validated-form' novalidate>
       <div class='mb-3'>
@@ -33,17 +52,7 @@
       </div>
       <button class='btn btn-success'>Reply</button>
     </form>
-    <% for(let reply of tweet.replies) { %>
-      <div class='card mb-3'>
-        <div class='card-body'>
-          <h5 class='card-title'>person who wrote comment</h5>
-          <p> <%= reply.replyText %> </p>
-          <form action='/tweets/<%= tweet._id %>/replies/<%= reply._id %>?_method=DELETE' method='POST'>
-            <button class='btn btn-sm btn-danger'>Delete</button>
-          </form>
-        </div>
-      </div>
-    <% } %> 
+    
   </div>
   <footer>
     <a href='/tweets'>All Tweets</a>

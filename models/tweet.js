@@ -2,12 +2,15 @@ const mongoose = require('mongoose');
 const Reply = require('./reply');
 const Schema = mongoose.Schema;
 
-
 const TweetSchema = new Schema({
   date: String,
   owner: String,
   tweetText: String,
   image: String,
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  },
   replies: [
     {
       type: Schema.Types.ObjectId,
