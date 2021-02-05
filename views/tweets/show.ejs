@@ -36,6 +36,8 @@
         </div>
         <% } %>
     </div>
+
+    <% if(currentUser) { %> 
     <form action='/tweets/<%=tweet._id%>/replies' method='POST' class ='mb-3 validated-form' novalidate>
       <div class='mb-3'>
         <label for='replyText'>Tweet A Reply</label>
@@ -52,6 +54,7 @@
       </div>
       <button class='btn btn-success'>Reply</button>
     </form>
+    <% } %> 
     
   </div>
   <footer>

@@ -21,8 +21,14 @@ router.post('/', isLoggedIn, validateTweet, catchAsync(async (req, res, next) =>
   res.redirect(`/tweets/${tweet._id}`)
 }))
 
+// nested paths so both reply authors and tweet authors are available to display in show
 router.get('/:id', catchAsync(async (req, res) => {
-  const tweet = await Tweet.findById(req.params.id).populate('author').populate('replies');
+  const tweet = await Tweet.findById(req.params.id).populate({
+    path:'replies',
+    populate: {
+      path: 'author'
+    }
+  }).populate('author');
   console.log(tweet);
   if(!tweet){
     req.flash('error', 'Cannot find that tweet!');

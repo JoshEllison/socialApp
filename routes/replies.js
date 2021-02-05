@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router( {mergeParams: true} ); // fixes null params error
 const catchAsync = require('../utils/catchAsync');
-const { validateReply } = require('../middleware')
+const { validateReply, isLoggedIn } = require('../middleware')
 const Tweet = require('../models/tweet');
 const Reply = require('../models/reply');
 
-router.post('/', validateReply, catchAsync(async (req, res) => {
+router.post('/', isLoggedIn, validateReply, catchAsync(async (req, res) => {
   const tweet = await Tweet.findById(req.params.id);
   const reply = new Reply(req.body.reply);
   tweet.replies.push(reply);
