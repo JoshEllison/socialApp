@@ -59,8 +59,9 @@ passport.use(new LocalStrategy(User.authenticate())); // add aditional strategie
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-// middleware to give access to whatever is in flash under success
+// middleware 
 app.use((req, res, next) => {
+  res.locals.currentUser = req.user;
   res.locals.success = req.flash('success');
   res.locals.error = req.flash('error');
   next();
