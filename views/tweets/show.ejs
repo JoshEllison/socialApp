@@ -25,7 +25,9 @@
       <% for(let reply of tweet.replies) { %>
         <div class='card mb-3'>
           <div class='card-body'>
-            <h5 class='card-title'>person who wrote comment</h5>
+            <div class="card-title">
+              <%= reply.author.username %>
+            </div>
             <p>
               <%= reply.replyText %>
             </p>

@@ -8,6 +8,7 @@ const Reply = require('../models/reply');
 router.post('/', isLoggedIn, validateReply, catchAsync(async (req, res) => {
   const tweet = await Tweet.findById(req.params.id);
   const reply = new Reply(req.body.reply);
+  reply.author = req.user._id;
   tweet.replies.push(reply);
   await reply.save();
   await tweet.save();
