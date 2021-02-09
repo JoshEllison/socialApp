@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router( {mergeParams: true} ); // fixes null params error
 const catchAsync = require('../utils/catchAsync');
-const { validateReply, isLoggedIn } = require('../middleware')
+const { validateReply, isLoggedIn, isReplyAuthor } = require('../middleware')
 const Tweet = require('../models/tweet');
 const Reply = require('../models/reply');
 
@@ -16,7 +16,7 @@ router.post('/', isLoggedIn, validateReply, catchAsync(async (req, res) => {
   res.redirect(`/tweets/${tweet._id}`)
 }))
 
-router.delete('/:replyId', catchAsync(async (req, res) => {
+router.delete('/:replyId', isLoggedIn, isReplyAuthor, catchAsync(async (req, res) => {
   const { id, replyId } = req.params;
   await Tweet.findByIdAndUpdate(id, { $pull: { replies: replyId } });
   await Reply.findByIdAndDelete(req.params.replyId);

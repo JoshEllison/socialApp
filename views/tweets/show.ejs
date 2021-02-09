@@ -31,9 +31,11 @@
             <p>
               <%= reply.replyText %>
             </p>
+            <% if( currentUser && reply.author.equals(currentUser.id)) { %>
             <form action='/tweets/<%= tweet._id %>/replies/<%= reply._id %>?_method=DELETE' method='POST'>
               <button class='btn btn-sm btn-danger'>Delete</button>
             </form>
+            <% } %> 
           </div>
         </div>
         <% } %>

@@ -45,3 +45,13 @@ module.exports.validateReply = (req, res, next) => {
   }
 }
 
+module.exports.isReplyAuthor = async (req, res, next) => {
+  const { id, replyId } = req.params;
+  const reply = await Reply.findById(replyId);
+  if (!reply.author.equals(req.user._id)) {
+    req.flash('error', 'You do not have permission to do that!')
+    return res.redirect(`/tweets/${id}`);
+  }
+  next();
+}
+
