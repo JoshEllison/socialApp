@@ -5,7 +5,12 @@ const Tweet = require('../models/tweet');
 const {isLoggedIn, isAuthor, validateTweet} = require('../middleware');
 
 router.get('/', catchAsync(async (req, res) => {
-  const tweets = await Tweet.find({});
+  const tweets = await Tweet.find({}).populate({
+    path: 'replies',
+    populate: {
+      path: 'author'
+    }
+  }).populate('author');
   res.render('tweets/index', { tweets })
 }))
 
