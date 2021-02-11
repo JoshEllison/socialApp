@@ -42,6 +42,7 @@ router.get('/:id', catchAsync(async (req, res) => {
   res.render('tweets/show', { tweet })
 }))
 
+
 router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(async (req, res) => {
   const { id } = req.params;
   const tweet = await Tweet.findById(id)
