@@ -5,61 +5,21 @@ const Tweet = require('../models/tweet');
 const {isLoggedIn, isAuthor, validateTweet} = require('../middleware');
 const tweets = require('../controllers/tweets')
 
-
+///////////////////////////////////////////////////////////////
+/// Routes with middleware and passed in controller methods ///
+///////////////////////////////////////////////////////////////
 router.get('/', catchAsync(tweets.index));
 
-router.get('/new', isLoggedIn, (req, res) => {
-  res.render('tweets/new')
-})
+router.get('/new', isLoggedIn, tweets.renderNewForm);
 
-router.post('/', isLoggedIn, validateTweet, catchAsync(async (req, res, next) => {
-  const tweet = new Tweet(req.body.tweet)
-  tweet.author = req.user._id;
-  await tweet.save();
-  req.flash('success', 'Your tweet was sent!')
-  res.redirect(`/tweets/${tweet._id}`)
-}))
+router.post('/', isLoggedIn, validateTweet, catchAsync(tweets.createTweet));
 
-// nested paths so both reply authors and tweet authors are available to display in show
-// Improvement: pageinate or set up infinite scrolling with a 25 or 50 limit per 
-router.get('/:id', catchAsync(async (req, res) => {
-  const tweet = await Tweet.findById(req.params.id).populate({
-    path:'replies',
-    populate: {
-      path: 'author'
-    }
-  }).populate('author');
-  console.log(tweet);
-  if(!tweet){
-    req.flash('error', 'Cannot find that tweet!');
-    return res.redirect('/tweets');
-  }
-  res.render('tweets/show', { tweet })
-}))
+router.get('/:id', catchAsync(tweets.showTweet))
 
+router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(tweets.renderEditForm))
 
-router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(async (req, res) => {
-  const { id } = req.params;
-  const tweet = await Tweet.findById(id)
-  if (!tweet) {
-    req.flash('error', 'Cannot find that tweet!');
-    return res.redirect('/tweets');
-  }
-  res.render('tweets/edit', { tweet })
-}))
+router.put('/:id', isLoggedIn, isAuthor, validateTweet, catchAsync(tweets.updateTweet))
 
-router.put('/:id', isLoggedIn, isAuthor, validateTweet, catchAsync(async (req, res) => {
-  const { id } = req.params;
-  const tweet = await Tweet.findByIdAndUpdate(id, { ...req.body.tweet })
-  req.flash('success', 'Your tweet was edited!')
-  res.redirect(`/tweets/${tweet._id}`)
-}))
-
-router.delete('/:id', isLoggedIn, isAuthor, catchAsync(async (req, res) => {
-  const { id } = req.params;
-  await Tweet.findByIdAndDelete(id);
-  req.flash('success', 'Your tweet was deleted!')
-  res.redirect('/tweets');
-}))
+router.delete('/:id', isLoggedIn, isAuthor, catchAsync(tweets.destroyTweet))
 
 module.exports = router;
