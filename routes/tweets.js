@@ -3,16 +3,10 @@ const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
 const Tweet = require('../models/tweet');
 const {isLoggedIn, isAuthor, validateTweet} = require('../middleware');
+const tweets = require('../controllers/tweets')
 
-router.get('/', catchAsync(async (req, res) => {
-  const tweets = await Tweet.find({}).populate({
-    path: 'replies',
-    populate: {
-      path: 'author'
-    }
-  }).populate('author');
-  res.render('tweets/index', { tweets })
-}))
+
+router.get('/', catchAsync(tweets.index));
 
 router.get('/new', isLoggedIn, (req, res) => {
   res.render('tweets/new')
@@ -27,6 +21,7 @@ router.post('/', isLoggedIn, validateTweet, catchAsync(async (req, res, next) =>
 }))
 
 // nested paths so both reply authors and tweet authors are available to display in show
+// Improvement: pageinate or set up infinite scrolling with a 25 or 50 limit per 
 router.get('/:id', catchAsync(async (req, res) => {
   const tweet = await Tweet.findById(req.params.id).populate({
     path:'replies',

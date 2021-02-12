@@ -1,6 +1,7 @@
 const { tweetSchema, replySchema } = require('./schemas');
 const ExpressError = require('./utils/ExpressError');
 const Tweet = require('./models/tweet');
+const Reply = require('./models/reply')
 
 
 // tweet middleware //
