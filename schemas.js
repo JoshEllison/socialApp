@@ -13,5 +13,6 @@ module.exports.replySchema = Joi.object({
   reply: Joi.object({
     replyText: Joi.string().required().max(150),
     image: Joi.string().allow(''),
+    rating: Joi.number().allow(''),
   }).required()
 })

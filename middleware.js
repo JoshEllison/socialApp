@@ -8,7 +8,6 @@ const Reply = require('./models/reply')
 module.exports.isLoggedIn = (req, res, next) => {
   if (!req.isAuthenticated()) {
     // store url user is requesting
-    
     req.flash('error', 'you must be signed in');
     return res.redirect('/login');
   }
@@ -56,13 +55,5 @@ module.exports.isReplyAuthor = async (req, res, next) => {
   next();
 }
 
-module.exports.isLikeAuthor = async( req, res, next) => {
-  const { id, likeId } = req.params;
-  const like = await like.findById(likeId);
-  if (!like.author.equals(req.user._id)) {
-    req.flash('error', 'You do not have permission to do that!')
-  }
-  next();
-}
 
 

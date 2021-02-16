@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const replySchema = new Schema({
   replyText: String,
-  image: String,
+  rating: Number,
   author: {
     type: Schema.Types.ObjectId,
     ref: 'User'

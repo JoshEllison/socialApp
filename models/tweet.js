@@ -4,7 +4,6 @@ const Schema = mongoose.Schema;
 
 const TweetSchema = new Schema({
   tweetText: String,
-  likes: {type: Number, default: 0},
   image: String,
   author: {
     type: Schema.Types.ObjectId,
@@ -16,7 +15,7 @@ const TweetSchema = new Schema({
       ref: 'Reply'
     }
   ],
-}, {timestamps: true})
+})
 
 // deletes replies when a tweet is deleted using a query middleware
 TweetSchema.post('findOneAndDelete', async function (doc) {

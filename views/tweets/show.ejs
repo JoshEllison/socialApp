@@ -2,7 +2,7 @@
 <div class='row'>
   <div class='col-6 offset-3'>
     <div class="card">
-      <h5 class="card-header">who liked eventually</h5>
+      <h5 class="card-header">Rating</h5>
       <div class="card-body">
         <h5 class="card-title">
           <%= tweet.author.username %> 
@@ -11,13 +11,8 @@
           <%= tweet.tweetText %>
         </p>
         <img src="<%=tweet.image %>" class="img-fluid rounded float-end" >
-        <form action='/tweets/<%=tweet._id%>/likes' method='POST'>
-          <div class='mb-3'>
-            <button class='btn btn-info' type='boolean' id='liked' name='tweet[likes]'>Like Tweet</button>
-          </div>
-        </form>
       </div>
-      
+
       <% if( currentUser && tweet.author.equals(currentUser._id)) { %> 
       <div class='card-footer'>
         <a class='card-link btn btn-warning' href='/tweets/<%=tweet._id%>/edit'>Edit</a>
@@ -48,6 +43,10 @@
     </div>
     <% if(currentUser) { %> 
     <form action='/tweets/<%=tweet._id%>/replies' method='POST' class ='mb-3 validated-form' novalidate>
+      <div class='mb-3'>
+        <label class='form-label' for='rating'>Rating</label>
+        <input type='range' min='1' max='5' name='reply[rating]' id='rating'>
+      </div>
       <div class='mb-3'>
         <label for='replyText'>Tweet A Reply</label>
       </div>

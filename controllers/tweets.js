@@ -39,13 +39,6 @@ module.exports.showTweet = async (req, res) => {
   res.render('tweets/show', { tweet })
 }
 
-// module.exports.likeTweet = async (req, res) => {
-//   const { id } = req.params;
-//   const tweet = await Tweet.findByIdAndUpdate(id, {...req.body.tweet })
-//   tweet.likes.push(like);
-//   res.redirect(`/tweets/${tweet._id}`)
-// }
-
 module.exports.renderEditForm = async (req, res) => {
   const { id } = req.params;
   const tweet = await Tweet.findById(id)
