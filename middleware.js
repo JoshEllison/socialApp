@@ -56,4 +56,13 @@ module.exports.isReplyAuthor = async (req, res, next) => {
   next();
 }
 
+module.exports.isLikeAuthor = async( req, res, next) => {
+  const { id, likeId } = req.params;
+  const like = await like.findById(likeId);
+  if (!like.author.equals(req.user._id)) {
+    req.flash('error', 'You do not have permission to do that!')
+  }
+  next();
+}
+
 

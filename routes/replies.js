@@ -10,8 +10,8 @@ const replies = require('../controllers/replies');
 /// Routes with middleware and passed in controller methods ///
 ///////////////////////////////////////////////////////////////
 
-router.post('/', isLoggedIn, validateReply, catchAsync(replies.createReply))
+router.post('/', isLoggedIn, validateReply, catchAsync(replies.createLike))
 
-router.delete('/:replyId', isLoggedIn, isReplyAuthor, catchAsync(replies.destroyReply))
+router.delete('/:replyId', isLoggedIn, isReplyAuthor, catchAsync(replies.destroyLike))
 
 module.exports = router;

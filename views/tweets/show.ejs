@@ -11,12 +11,11 @@
           <%= tweet.tweetText %>
         </p>
         <img src="<%=tweet.image %>" class="img-fluid rounded float-end" >
-        <div class="button-container">
-          <button type="button" class="btn btn-outline-secondary">comment</button>
-          <button type="button" class="btn btn-outline-secondary">retweet</button>
-          <button type="button" class="btn btn-outline-secondary">&#9825</button>
-          <button type="button" class="btn btn-outline-secondary">share</button>
-        </div>
+        <form action='/tweets/<%=tweet._id%>/likes' method='POST'>
+          <div class='mb-3'>
+            <button class='btn btn-info' type='boolean' id='liked' name='tweet[likes]'>Like Tweet</button>
+          </div>
+        </form>
       </div>
       
       <% if( currentUser && tweet.author.equals(currentUser._id)) { %> 
