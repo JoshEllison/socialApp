@@ -1,4 +1,5 @@
 <% layout('layouts/boilerplate') %>
+<link rel="stylesheet" href="/stylesheets/stars.css">
 <div class='row'>
   <div class='col-6 offset-3'>
     <div class="card">
@@ -12,7 +13,6 @@
         </p>
         <img src="<%=tweet.image %>" class="img-fluid rounded float-end" >
       </div>
-
       <% if( currentUser && tweet.author.equals(currentUser._id)) { %> 
       <div class='card-footer'>
         <a class='card-link btn btn-warning' href='/tweets/<%=tweet._id%>/edit'>Edit</a>
@@ -22,31 +22,27 @@
       </div>
       <% } %> 
     </div>
-    <div class="card">
-      <% for(let reply of tweet.replies) { %>
-        <div class='card mb-3'>
-          <div class='card-body'>
-            <div class="card-title">
-              <%= reply.author.username %>
-            </div>
-            <p>
-              <%= reply.replyText %>
-            </p>
-            <% if( currentUser && reply.author.equals(currentUser.id)) { %>
-            <form action='/tweets/<%= tweet._id %>/replies/<%= reply._id %>?_method=DELETE' method='POST'>
-              <button class='btn btn-sm btn-danger'>Delete</button>
-            </form>
-            <% } %> 
-          </div>
-        </div>
-        <% } %>
-    </div>
+
     <% if(currentUser) { %> 
     <form action='/tweets/<%=tweet._id%>/replies' method='POST' class ='mb-3 validated-form' novalidate>
-      <div class='mb-3'>
+      <!-- <div class='mb-3'>
         <label class='form-label' for='rating'>Rating</label>
         <input type='range' min='1' max='5' name='reply[rating]' id='rating'>
-      </div>
+      </div> -->
+      <fieldset class="starability-basic">
+        <input type="radio" id="no-rate" class="input-no-rate" name="reply[rating]" value="1" checked
+          aria-label="No rating." />
+        <input type="radio" id="first-rate1" name="reply[rating]" value="1" />
+        <label for="first-rate1" title="Terrible">1 star</label>
+        <input type="radio" id="first-rate2" name="reply[rating]" value="2" />
+        <label for="first-rate2" title="Not good">2 stars</label>
+        <input type="radio" id="first-rate3" name="reply[rating]" value="3" />
+        <label for="first-rate3" title="Average">3 stars</label>
+        <input type="radio" id="first-rate4" name="reply[rating]" value="4" />
+        <label for="first-rate4" title="Very good">4 stars</label>
+        <input type="radio" id="first-rate5" name="reply[rating]" value="5" />
+        <label for="first-rate5" title="Amazing">5 stars</label>
+      </fieldset>
       <div class='mb-3'>
         <label for='replyText'>Tweet A Reply</label>
       </div>
@@ -56,14 +52,34 @@
           Looks good
         </div>
       </div>
-      <div class='mb-3'>
-        <label class='form-label' for='image'>Image URL</label>
-        <input class='form-control' type='text' id='image' name='reply[image]'>
-      </div>
       <button class='btn btn-success'>Reply</button>
     </form>
     <% } %> 
   </div>
+
+  <div class="card">
+    <% for(let reply of tweet.replies) { %>
+      <div class='card mb-3'>
+        <div class='card-body'>
+          <div class="card-title">
+            <%= reply.author.username %>
+          </div>
+          <p class='starability-result' data-rating='<%=reply.rating%>'>
+            Content Rating: <%= reply.rating %> stars
+          </p>
+          <p>
+            <%= reply.replyText %>
+          </p>
+          <% if( currentUser && reply.author.equals(currentUser.id)) { %>
+            <form action='/tweets/<%= tweet._id %>/replies/<%= reply._id %>?_method=DELETE' method='POST'>
+              <button class='btn btn-sm btn-danger'>Delete</button>
+            </form>
+            <% } %>
+        </div>
+      </div>
+      <% } %>
+  </div>
+
   <footer>
     <a href='/tweets'>All Tweets</a>
   </footer>

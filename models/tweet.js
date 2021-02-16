@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 const TweetSchema = new Schema({
   tweetText: String,
   image: String,
+  likeCount: { type: Number, default: 0},
   author: {
     type: Schema.Types.ObjectId,
     ref: 'User'

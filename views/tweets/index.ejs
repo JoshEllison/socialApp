@@ -3,20 +3,22 @@
   <div>
     <a href="/tweets/new">Add Tweet</a>
   </div>
- 
     <% for (let tweet of tweets) { %>
       <div class="card mb-3">
         <h5 class="card-header">
-          liked by
+          <%= tweet.likeCount %>
         </h5>
         <div class="card-body mb-3">
           <h5 class="card-title mb-3">Tweet By: <%= tweet.author.username %>
           </h5>
           <p class="card-text mb-3"><%= tweet.tweetText %></p>
-          <img src="<%=tweet.image %>" class="img-fluid rounded mx-auto d-block">
         </div>
         <footer>
-          <a href="'/tweets/<%=tweet._id%>/like'" class="btn btn-primary mb-3">like test</a>
+          <form action='/tweets/<%=tweet._id%>/act' method='POST'>
+            <div class='mb-3'>
+              <button class='btn btn-info'>Like Test</button>
+            </div>
+          </form>
         </footer>
       </div>
     <% } %>

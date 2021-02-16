@@ -6,13 +6,13 @@ module.exports.tweetSchema = Joi.object({
   tweet: Joi.object({
     tweetText: Joi.string().required().max(150),
     image: Joi.string().allow(''),
+    likeCount: Joi.number().allow(''),
   }).required()
 });
 
 module.exports.replySchema = Joi.object({
   reply: Joi.object({
     replyText: Joi.string().required().max(150),
-    image: Joi.string().allow(''),
-    rating: Joi.number().allow(''),
+    rating: Joi.number().min(1).max(5).allow(''),
   }).required()
 })

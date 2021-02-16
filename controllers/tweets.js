@@ -63,3 +63,11 @@ module.exports.destroyTweet = async (req, res) => {
   res.redirect('/tweets');
 }
 
+module.exports.updateLikes = async (req, res) => {
+  const { id } = req.params;
+  const counter = 1;
+  await Tweet.findByIdAndUpdate(id, {$inc: {likeCount: counter}})
+  req.flash('success', 'liked!')
+  res.redirect('/tweets')
+}
+
