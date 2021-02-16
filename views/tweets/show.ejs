@@ -11,7 +11,14 @@
           <%= tweet.tweetText %>
         </p>
         <img src="<%=tweet.image %>" class="img-fluid rounded float-end" >
+        <div class="button-container">
+          <button type="button" class="btn btn-outline-secondary">comment</button>
+          <button type="button" class="btn btn-outline-secondary">retweet</button>
+          <button type="button" class="btn btn-outline-secondary">&#9825</button>
+          <button type="button" class="btn btn-outline-secondary">share</button>
+        </div>
       </div>
+      
       <% if( currentUser && tweet.author.equals(currentUser._id)) { %> 
       <div class='card-footer'>
         <a class='card-link btn btn-warning' href='/tweets/<%=tweet._id%>/edit'>Edit</a>

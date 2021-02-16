@@ -1,4 +1,5 @@
-const Reply = require('../models/reply')
+const Reply = require('../models/reply');
+const Tweet = require('../models/tweet');
 
 module.exports.createReply = async (req, res) => {
   const tweet = await Tweet.findById(req.params.id);
