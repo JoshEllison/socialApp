@@ -5,7 +5,7 @@
     <form action='/tweets/<%=tweet._id%>?_method=PUT' method='POST' novalidate class='validated-form'>
       <div class='mb-3'>
         <label class='form-label' for='tweetText'>150 Characters</label>
-        <textarea class='form-control' type='text' id='tweetText' name='tweet[tweetText]' required><%=tweet.tweetText %></textarea>
+        <textarea maxlength='150' class='form-control' type='text' id='tweetText' name='tweet[tweetText]' required><%=tweet.tweetText %></textarea>
         <div class='valid-feedback'>
           Looks good
         </div>
