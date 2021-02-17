@@ -65,21 +65,13 @@ module.exports.destroyTweet = async (req, res) => {
 
 module.exports.updateLikes = async (req, res) => {
   const { id } = req.params;
-  const counterUp = 1;
-  const counterDown = -1;
-  const liker = req.user._id;
+  const counter = 1;
+  const liker = req.user.username;
+  await Tweet.findByIdAndUpdate(id, {$inc: {likeCount: counter}})
   const likedTweet = await Tweet.findById(req.params.id)
-  if (!likedTweet.likedBy.includes(liker)) {
-    await Tweet.findByIdAndUpdate(id, { $inc: { likeCount: counterUp } })
-    likedTweet.likedBy.push(liker)
-  } else {
-    await Tweet.findByIdAndUpdate(id, { $inc: { likeCount: counterDown } })
-    const index = likedTweet.likedBy.indexOf(liker)
-    likedTweet.likedBy.splice(index, 1);
-  }
-  
+  likedTweet.likedBy.push(liker)
   console.log(likedTweet);
-  req.flash('success', 'accepted feedback!')
+  req.flash('success', 'liked!')
   res.redirect('/tweets')
 }
 

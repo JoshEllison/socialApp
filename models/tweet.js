@@ -7,6 +7,7 @@ const TweetSchema = new Schema({
   image: String,
   likeCount: { type: Number, default: 0},
   likedBy: Array,
+  date: {type: Date, default: Date.now},
   author: {
     type: Schema.Types.ObjectId,
     ref: 'User'
