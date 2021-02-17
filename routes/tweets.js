@@ -15,7 +15,7 @@ router.post('/', isLoggedIn, validateTweet, catchAsync(tweets.createTweet));
 
 router.get('/:id', catchAsync(tweets.showTweet));
 
-router.post('/:id/act', catchAsync(tweets.updateLikes))
+router.post('/:id/act', isLoggedIn, catchAsync(tweets.updateLikes))
 
 router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(tweets.renderEditForm))
 

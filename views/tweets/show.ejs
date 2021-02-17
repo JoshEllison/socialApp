@@ -25,24 +25,6 @@
 
     <% if(currentUser) { %> 
     <form action='/tweets/<%=tweet._id%>/replies' method='POST' class ='mb-3 validated-form' novalidate>
-      <!-- <div class='mb-3'>
-        <label class='form-label' for='rating'>Rating</label>
-        <input type='range' min='1' max='5' name='reply[rating]' id='rating'>
-      </div> -->
-      <fieldset class="starability-basic">
-        <input type="radio" id="no-rate" class="input-no-rate" name="reply[rating]" value="1" checked
-          aria-label="No rating." />
-        <input type="radio" id="first-rate1" name="reply[rating]" value="1" />
-        <label for="first-rate1" title="Terrible">1 star</label>
-        <input type="radio" id="first-rate2" name="reply[rating]" value="2" />
-        <label for="first-rate2" title="Not good">2 stars</label>
-        <input type="radio" id="first-rate3" name="reply[rating]" value="3" />
-        <label for="first-rate3" title="Average">3 stars</label>
-        <input type="radio" id="first-rate4" name="reply[rating]" value="4" />
-        <label for="first-rate4" title="Very good">4 stars</label>
-        <input type="radio" id="first-rate5" name="reply[rating]" value="5" />
-        <label for="first-rate5" title="Amazing">5 stars</label>
-      </fieldset>
       <div class='mb-3'>
         <label for='replyText'>Tweet A Reply</label>
       </div>
@@ -64,9 +46,6 @@
           <div class="card-title">
             <%= reply.author.username %>
           </div>
-          <p class='starability-result' data-rating='<%=reply.rating%>'>
-            Content Rating: <%= reply.rating %> stars
-          </p>
           <p>
             <%= reply.replyText %>
           </p>

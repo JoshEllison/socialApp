@@ -7,6 +7,7 @@ module.exports.tweetSchema = Joi.object({
     tweetText: Joi.string().required().max(150),
     image: Joi.string().allow(''),
     likeCount: Joi.number().allow(''),
+    likedBy: Joi.array().allow('')
   }).required()
 });
 
