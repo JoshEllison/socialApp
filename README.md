@@ -2,7 +2,7 @@
 This is a node.js social app powered by Express that provides the main functions you'd expect from a twitter like app, such as: 150 character posts, likes, retweets, etc.
 
 ## Demo
-Here is a working live demo: add once live
+Here is a working live demo: TODO
 
 ## Built with
 - MongoDb
