@@ -1,8 +1,23 @@
-<% layout('layouts/boilerplate') %> 
-  <h1>All Tweets</h1>
-  <div>
-    <a href="/tweets/new">Add Tweet</a>
+<% layout('layouts/boilerplate') %>
+  <div class='row'>
+    <h2 class='text-center'>What's on your mind?</h2>
+    <div class='col-6 offset-3'>
+      <form action='/tweets' method='POST' novalidate class='validated-form'>
+        <div class='mb-3'>
+          <label class='form-label' for='tweetText'>150 Characters</label>
+          <textarea maxlength='150' class='form-control' type='text' id='tweetText' name='tweet[tweetText]'
+            required></textarea>
+          <div class='valid-feedback'>
+            Looks good
+          </div>
+        </div>
+        <div class='mb-3'>
+          <button class='btn btn-success'>Post Tweet</button>
+        </div>
+      </form>
+    </div>
   </div>
+  <h1>All Tweets</h1>
     <% for (let tweet of tweets) { %>
       <div class="card mb-3">
         <h5 class="card-header">
