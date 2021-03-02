@@ -21,7 +21,6 @@
     <% for (let tweet of tweets) { %>
       <div class="card mb-3">
         <h5 class="card-header">
-
         </h5>
         <div class="card-body mb-3">
           <h5 class="card-title mb-3">@<%= tweet.author.username %> - <%= tweet.date.toDateString() %>
@@ -29,14 +28,74 @@
           <p class="card-text mb-3"><%= tweet.tweetText %></p>
         </div>
         <footer>
-          <form action='/tweets/<%=tweet._id%>/act' method='POST'>
-            <div class='mb-3'>
-              <button class='btn btn-light'>
-                &#9825 <span class='badge bg-light text-dark'><%= tweet.likeCount %></span>
-              </button>
+          <div class='btn-group'>
+              <form action='/tweets/<%=tweet._id%>/act' method='POST'>
+                  <button class='btn btn-light'>
+                    &#9825 <span class='badge bg-light text-dark'>
+                      <%= tweet.likeCount %>
+                    </span>
+                  </button>
+              </form>
+              <p>
+                <a class="btn btn-light" data-bs-toggle="collapse" href="#collapseExample" role="button"
+                  aria-expanded="false" aria-controls="collapseExample">
+                  &#128172 <span class='badge bg-light text-dark'>
+                      <%= tweet.replies.length %>
+                  </span>
+                </a>
+              </p>
+          </div>
+        </div>
+          <% if( currentUser && tweet.author.equals(currentUser._id)) { %>
+            <div class='card-footer'>
+              <a class='card-link btn btn-warning' href='/tweets/<%=tweet._id%>/edit'>Edit</a>
+              <form class='d-inline' action='/tweets/<%=tweet._id%>?_method=DELETE' method='POST'>
+                <button class='btn btn-danger'>Delete</button>
+              </form>
             </div>
-          </form>
+            <% } %>
+          </div>
+          <div class="collapse" id="collapseExample">
+            <div class="card card-body">
+              <% if(currentUser) { %>
+                <form action='/tweets/<%=tweet._id%>/replies' method='POST' class='mb-3 validated-form' novalidate>
+                  <div class='mb-3'>
+                    <label for='replyText'>Tweet A Reply</label>
+                  </div>
+                  <div class='mb-3'>
+                    <textarea maxlength='150' class='form-control' name='reply[replyText]' id='replyText' cols='30' rows='3'
+                      required></textarea>
+                    <div class='valid-feedback'>
+                      Looks good
+                    </div>
+                  </div>
+                  <button class='btn btn-success'>Reply</button>
+                </form>
+                <% } %>
+                  </div>
+                  <div class="card">
+                    <% for(let reply of tweet.replies) { %>
+                      <div class='card mb-3'>
+                        <div class='card-body'>
+                          <div class="card-title">
+                            <%= reply.author.username %> - replied
+                          </div>
+                          <p>
+                            <%= reply.replyText %>
+                          </p>
+                          <% if( currentUser && reply.author.equals(currentUser.id)) { %>
+                            <form action='/tweets/<%= tweet._id %>/replies/<%= reply._id %>?_method=DELETE' method='POST'>
+                              <button class='btn btn-sm btn-danger'>Delete</button>
+                            </form>
+                            <% } %>
+                        </div>
+                      </div>
+                      <% } %>
+                  </div>
+            </div>
+          </div>
         </footer>
+        
       </div>
     <% } %>
   
