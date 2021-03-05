@@ -2,7 +2,9 @@
 This is a node.js social app powered by Express that provides the main functions you'd expect from a twitter like app, such as: 150 character posts, likes, retweets, etc.
 
 ## Demo
-Here is a working live demo: TODO
+Here is a working live demo: https://radiant-reef-59020.herokuapp.com/
+<img width="951" alt="social app pic 2" src="https://user-images.githubusercontent.com/35431728/110177778-5649d380-7dba-11eb-9190-32babbd81e9e.png">
+
 
 ## Built with
 - MongoDb
