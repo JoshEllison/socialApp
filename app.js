@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
+
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
@@ -6,6 +10,7 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');
+const dbUrl = process.env.DB_URL
 
 // auth
 const passport = require('passport');
@@ -16,7 +21,8 @@ const userRoutes = require('./routes/users');
 const tweetRoutes = require('./routes/tweets');
 const replyRoutes = require('./routes/replies');
 
-mongoose.connect('mongodb://localhost:27017/social-app', {
+// 'mongodb://localhost:27017/social-app'
+mongoose.connect(dbUrl, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useUnifiedTopology: true,
